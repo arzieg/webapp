@@ -34,9 +34,19 @@ func main() {
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.Logger)
 
-	handler := api.HandlerFromMux(h, r)
+	r.Route("/users", func(r chi.Router) {
+		r.Get("/", h.GetUsers)
+		/*		r.Post("/", h.PostUser)
 
-	err = http.ListenAndServe(":8080", handler)
+				r.Route("/{userID}", func(r chi.Router) {
+					r.Get("/", h.GetUser)
+					r.Patch("/", h.PatchUser)
+					r.Delete("/", h.DeleteUser)
+				})
+		*/
+	})
+
+	err = http.ListenAndServe(":8080", r)
 	if err != nil {
 		log.Fatal(err)
 	}

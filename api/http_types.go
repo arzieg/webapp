@@ -5,30 +5,41 @@ type EmailResponse struct {
 	Primary bool   `json:"primary"`
 }
 
-// PatchUserRequest defines model for PatchUserRequest.
-type PatchUserRequest struct {
-	// First name
-	FirstName *string `json:"first_name,omitempty"`
+// type CreateUserRequest struct {
+// 	FirstName string `json:"first_name" validate:"required_without=LastName"`
+// 	LastName  string `json:"last_name" validate:"required_without=FirstName"`
+// 	Email     string `json:"email" validate:"required,email"`
+// }
 
-	// Last name
-	LastName *string `json:"last_name,omitempty"`
-}
+// type UpdateUserRequest struct {
+// 	FirstName *string `json:"first_name" validate:"required_without=LastName"`
+// 	LastName  *string `json:"last_name" validate:"required_without=FirstName"`
+// }
+
+// PatchUserRequest defines model for PatchUserRequest.
+// type PatchUserRequest struct {
+// 	// First name
+// 	FirstName *string `json:"first_name,omitempty"`
+
+// 	// Last name
+// 	LastName *string `json:"last_name,omitempty"`
+// }
 
 // PostUserRequest defines model for PostUserRequest.
-type PostUserRequest struct {
-	// E-mail
-	Email string `json:"email"`
+// type PostUserRequest struct {
+// 	// E-mail
+// 	Email string `json:"email"`
 
-	// First name
-	FirstName string `json:"first_name"`
+// 	// First name
+// 	FirstName string `json:"first_name"`
 
-	// Last name
-	LastName string `json:"last_name"`
-}
+// 	// Last name
+// 	LastName string `json:"last_name"`
+// }
 
 // UserResponse defines model for UserResponse.
 type UserResponse struct {
-	Id        int             `json:"id"`
+	Id        uint            `json:"id"`
 	FirstName string          `json:"first_name"`
 	LastName  string          `json:"last_name"`
 	Emails    []EmailResponse `json:"emails"`
@@ -38,16 +49,16 @@ type UserResponse struct {
 type UsersResponse []UserResponse
 
 // UserID defines model for userID.
-type UserID string
+//type UserID string
 
 // PostUserJSONBody defines parameters for PostUser.
-type PostUserJSONBody PostUserRequest
+//type PostUserJSONBody PostUserRequest
 
 // PatchUserJSONBody defines parameters for PatchUser.
-type PatchUserJSONBody PatchUserRequest
+//type PatchUserJSONBody PatchUserRequest
 
 // PostUserJSONRequestBody defines body for PostUser for application/json ContentType.
-type PostUserJSONRequestBody PostUserJSONBody
+//type PostUserJSONRequestBody PostUserJSONBody
 
 // PatchUserJSONRequestBody defines body for PatchUser for application/json ContentType.
-type PatchUserJSONRequestBody PatchUserJSONBody
+//type PatchUserJSONRequestBody PatchUserJSONBody
