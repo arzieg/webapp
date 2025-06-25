@@ -51,6 +51,10 @@ func (siw *ServerInterfaceWrapper) GetUsers(w http.ResponseWriter, r *http.Reque
 	handler(w, r.WithContext(ctx))
 }
 
+type UserHandler struct {
+	storage storage.UserStorage
+}
+
 func (h UserHandler) GetUsers(w http.ResponseWriter, r *http.Request) {
 	users, err := h.storage.All()
 	if err != nil {
@@ -91,10 +95,6 @@ func emailResponseFromDBModel(e models.EmailDBModel) EmailResponse {
 		Address: e.Address,
 		Primary: e.Primary,
 	}
-}
-
-type UserHandler struct {
-	storage storage.UserStorage
 }
 
 func NewUserHandler(storage storage.UserStorage) UserHandler {
