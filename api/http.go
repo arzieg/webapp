@@ -5,17 +5,21 @@ import (
 	"log"
 	"net/http"
 	"webapp/models"
-	"webapp/storage"
 
 	_ "github.com/go-chi/chi/v5/middleware"
 )
 
-type UserHandler struct {
-	storage storage.UserStorage
+type UserStorageIF interface {
+	// NewUserStorage() *gorm.DB
+	All() ([]models.UserDBModel, error)
 }
 
-func NewUserHandler(storage storage.UserStorage) UserHandler {
-	return UserHandler{
+type UserHandler struct {
+	storage UserStorageIF
+}
+
+func NewUserHandler(storage UserStorageIF) *UserHandler {
+	return &UserHandler{
 		storage: storage,
 	}
 }

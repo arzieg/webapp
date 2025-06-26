@@ -10,13 +10,13 @@ type UserStorage struct {
 	db *gorm.DB
 }
 
-func NewUserStorage(db *gorm.DB) UserStorage {
-	return UserStorage{
+func NewUserStorage(db *gorm.DB) *UserStorage {
+	return &UserStorage{
 		db: db,
 	}
 }
 
-func (s UserStorage) All() ([]models.UserDBModel, error) {
+func (s *UserStorage) All() ([]models.UserDBModel, error) {
 	var users []models.UserDBModel
 
 	result := s.db.Preload("Emails").Find(&users)
