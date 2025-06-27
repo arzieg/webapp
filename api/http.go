@@ -4,14 +4,15 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"webapp/models"
+	"webapp/domain"
 
 	_ "github.com/go-chi/chi/v5/middleware"
 )
 
 type UserStorageIF interface {
 	// NewUserStorage() *gorm.DB
-	All() ([]models.UserDBModel, error)
+	//All() ([]storage.UserDBModel, error)
+	All() (*[]domain.User, error)
 }
 
 type UserHandler struct {
@@ -24,8 +25,8 @@ func NewUserHandler(storage UserStorageIF) *UserHandler {
 	}
 }
 
-func (h UserHandler) GetUsers(w http.ResponseWriter, r *http.Request) {
-	users, err := h.storage.All()
+func (h *UserHandler) GetUsers(w http.ResponseWriter, r *http.Request) {
+	usersPtr, err := h.storage.All()
 	if err != nil {
 		log.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -33,8 +34,9 @@ func (h UserHandler) GetUsers(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var usersResponse []UserResponse
+	users := *usersPtr
 	for _, u := range users {
-		usersResponse = append(usersResponse, userResponseFromDBModel(u))
+		usersResponse = append(usersResponse, userResponseFromDomainModel(u))
 	}
 
 	err = json.NewEncoder(w).Encode(usersResponse)
@@ -45,10 +47,10 @@ func (h UserHandler) GetUsers(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func userResponseFromDBModel(u models.UserDBModel) UserResponse {
+func userResponseFromDomainModel(u domain.User) UserResponse {
 	var emails []EmailResponse
 	for _, e := range u.Emails {
-		emails = append(emails, emailResponseFromDBModel(e))
+		emails = append(emails, emailResponseFromDomainModel(e))
 	}
 
 	return UserResponse{
@@ -59,7 +61,7 @@ func userResponseFromDBModel(u models.UserDBModel) UserResponse {
 	}
 }
 
-func emailResponseFromDBModel(e models.EmailDBModel) EmailResponse {
+func emailResponseFromDomainModel(e domain.Email) EmailResponse {
 	return EmailResponse{
 		Address: e.Address,
 		Primary: e.Primary,

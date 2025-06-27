@@ -1,7 +1,7 @@
 package storage
 
 import (
-	"webapp/models"
+	"webapp/domain"
 
 	"gorm.io/gorm"
 )
@@ -16,13 +16,18 @@ func NewUserStorage(db *gorm.DB) *UserStorage {
 	}
 }
 
-func (s *UserStorage) All() ([]models.UserDBModel, error) {
-	var users []models.UserDBModel
+func (s *UserStorage) All() (*[]domain.User, error) {
+	var users []UserDBModel
 
 	result := s.db.Preload("Emails").Find(&users)
 	if result.Error != nil {
 		return nil, result.Error
 	}
 
-	return users, nil
+	domainUsers := make([]domain.User, len(users))
+	for i, u := range users {
+		domainUsers[i] = toUserDomainModel(u)
+	}
+
+	return &domainUsers, nil
 }

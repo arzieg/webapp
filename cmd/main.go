@@ -11,7 +11,7 @@ import (
 	"gorm.io/gorm"
 
 	"webapp/api"
-	"webapp/models"
+
 	"webapp/storage"
 )
 
@@ -21,7 +21,7 @@ func main() {
 		panic("failed to connect database")
 	}
 
-	err = models.AutoMigrate(db)
+	err = storage.AutoMigrate(db)
 	if err != nil {
 		log.Fatalf("failed to apply migration. Got %v", err)
 	}
