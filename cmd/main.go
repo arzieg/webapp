@@ -36,13 +36,13 @@ func main() {
 
 	r.Route("/users", func(r chi.Router) {
 		r.Get("/", h.GetUsers)
-		/*		r.Post("/", h.PostUser)
-
-				r.Route("/{userID}", func(r chi.Router) {
-					r.Get("/", h.GetUser)
-					r.Patch("/", h.PatchUser)
-					r.Delete("/", h.DeleteUser)
-				})
+		r.Post("/", h.PostUser)
+		/*
+			r.Route("/{userID}", func(r chi.Router) {
+				r.Get("/", h.GetUser)
+				r.Patch("/", h.PatchUser)
+				r.Delete("/", h.DeleteUser)
+			})
 		*/
 	})
 

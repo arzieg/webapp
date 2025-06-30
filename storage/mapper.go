@@ -62,3 +62,19 @@ func toUserDBModel(u domain.User) UserDBModel {
 		Emails:    toEmailDBModels(u.Emails),
 	}
 }
+
+func toCreateUserRequestDBModel(u domain.CreateUserRequest) CreateUserRequestDBModel {
+	return CreateUserRequestDBModel{
+		FirstName: u.FirstName,
+		LastName:  u.LastName,
+		Email:     u.Email,
+	}
+}
+
+func toCreateUserRequestDomainModel(u CreateUserRequestDBModel) domain.CreateUserRequest {
+	return domain.CreateUserRequest{
+		FirstName: u.FirstName,
+		LastName:  u.LastName,
+		Email:     u.Email,
+	}
+}

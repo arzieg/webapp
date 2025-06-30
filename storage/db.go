@@ -24,6 +24,12 @@ type EmailDBModel struct {
 	UserID  int    `gorm:"column:user_id"`
 }
 
+type CreateUserRequestDBModel struct {
+	FirstName string `json:"first_name" validate:"required_without=LastName"`
+	LastName  string `json:"last_name" validate:"required_without=FirstName"`
+	Email     string `json:"email" validate:"required,email"`
+}
+
 func (EmailDBModel) TableName() string {
 	return "emails"
 }

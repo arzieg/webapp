@@ -13,6 +13,7 @@ type UserStorageIF interface {
 	// NewUserStorage() *gorm.DB
 	//All() ([]storage.UserDBModel, error)
 	All() (*[]domain.User, error)
+	Add(user *domain.User) error
 }
 
 type UserHandler struct {
@@ -66,4 +67,46 @@ func emailResponseFromDomainModel(e domain.Email) EmailResponse {
 		Address: e.Address,
 		Primary: e.Primary,
 	}
+}
+
+func userDomainModelFromCreateRequest(r domain.CreateUserRequest) domain.User {
+	return domain.User{
+		FirstName: r.FirstName,
+		LastName:  r.LastName,
+		Emails: []domain.Email{
+			{
+				Address: r.Email,
+			},
+		},
+	}
+}
+
+func (h UserHandler) PostUser(w http.ResponseWriter, r *http.Request) {
+	var createUserRequest domain.CreateUserRequest
+	err := json.NewDecoder(r.Body).Decode(&createUserRequest)
+	if err != nil {
+		log.Println(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	//validate := validator.New()
+	// err = validate.Struct(createUserRequest)
+	// if err != nil {
+	// 	log.Println(err)
+	// 	w.WriteHeader(http.StatusBadRequest)
+	// 	return
+	// }
+
+	user := userDomainModelFromCreateRequest(createUserRequest)
+
+	err = h.storage.Add(&user)
+
+	if err != nil {
+		log.Println(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
 }

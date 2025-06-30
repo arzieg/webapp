@@ -14,3 +14,9 @@ type Email struct {
 	Primary bool
 	UserID  int
 }
+
+type CreateUserRequest struct {
+	FirstName string
+	LastName  string
+	Email     string
+}
