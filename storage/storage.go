@@ -46,7 +46,7 @@ func (s *UserStorage) Add(user *domain.User) error {
 
 		result = tx.Create(&email)
 		if result.Error != nil {
-			fmt.Errorf("error creating user: %v", result.Error)
+			return fmt.Errorf("error creating user: %v", result.Error)
 		}
 		return nil
 	})
